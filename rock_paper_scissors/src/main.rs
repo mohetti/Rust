@@ -2,18 +2,35 @@ use rand::Rng;
 use std::io;
 
 fn main() {
-    let user_weapon = get_user_weapon();
-    let user_index = get_index(&user_weapon);
+    let mut win_count = 0;
 
-    println!("The user's weapon is {}", user_weapon);
+    loop {
+        if win_count == 5 {
+            println!("You won 5 games");
+            return;
+        }
+        let user_weapon = get_user_weapon();
+        let user_index = get_index(&user_weapon);
 
-    let rng = rand::thread_rng().gen_range(0..2);
-    let weapon_chamber = ["rock", "paper", "scissors"];
-    let comp_weapon = weapon_chamber[rng];
-    println!("The computer's weapon is {}", &comp_weapon);
+        println!("The user's weapon is {}", user_weapon);
 
-    if rng == user_index {
-        return println!("It's a tie.");
+        let rng = rand::thread_rng().gen_range(0..3);
+        let weapon_chamber = ["rock", "paper", "scissors"];
+        let comp_weapon = weapon_chamber[rng];
+        println!("The computer's weapon is {}", &comp_weapon);
+
+        if rng == user_index {
+            println!("It's a tie.");
+        } else if rng == 0 && user_index == 1
+            || rng == 1 && user_index == 2
+            || rng == 2 && user_index == 0
+        {
+            win_count = win_count + 1;
+            println!("Win count {}", win_count);
+            print_player_wins();
+        } else {
+            print_computer_wins();
+        }
     }
 }
 
@@ -55,4 +72,12 @@ fn get_index(weapon: &String) -> usize {
         return 1;
     }
     2
+}
+
+fn print_computer_wins() {
+    println!("Computer wins");
+}
+
+fn print_player_wins() {
+    println!("Player wins");
 }
